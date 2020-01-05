@@ -14,10 +14,7 @@ var final = document.getElementById('final')
 var field = document.getElementById('field')
 var score = 0
 var quizLength = 5
-var timeLeft = 75
-// let v = new Date()
-// v.setMinutes(timeLeft)
-// console.log(v)
+var timeLeft = 10
 startButton.addEventListener('click', startQuiz)
 nextButton.addEventListener('click', () => {
     currentQuestion++
@@ -33,9 +30,10 @@ function startQuiz (){
     var downloadTimer = setInterval(function(){
       timeLeft--;
       document.getElementById("display").textContent = timeLeft;
-      if(timeLeft <= 0)
-          clearInterval(downloadTimer);
+      if(timeLeft < 1)
+          selectAnswer();
       },1000);
+    timeOut()
     questionContainerEl.classList.remove('hide')
     nextButton.classList.remove('hide')
     final.classList.add('hide')
@@ -47,7 +45,7 @@ function randomQuestion() {
   if (shuffledQuestion.includes(randNumb)) {
     return randomQuestion()
   }
-  else {
+  else { 
     return randNumb
   }
 }
@@ -55,7 +53,7 @@ function nextQuestion (){
     resetState()
     showQuestion(questions[shuffledQuestion[currentQuestion]])
     if (quizLength === currentQuestion) {
-      alert(score)
+      alert("score")
     } else {
         nextButton.classList.add('hide')
     }
@@ -75,7 +73,6 @@ function resetState(){
         answerButtonELement.removeChild(answerButtonELement.firstChild)
 }}
 function selectAnswer(e){
-  console.log(e);
   if (e) {
     score ++
   }
@@ -83,21 +80,24 @@ function selectAnswer(e){
   if (currentQuestion === quizLength) {
     var finalScore = `${score}`
     lsOutput = document.getElementById('lsOutput')
-submitButton.onclick = function() {
-  const initial = myText.value;
-  localStorage.setItem(myText.value , initial);
+    submitButton.onclick = function() {
+    const initial = myText.value;
+    localStorage.setItem(myText.value , initial);
   for(let i=0; i < localStorage.length; i++) {
-  const initial = localStorage.key(i);
-  lsOutput.innerHTML += `${initial}: ${score}<br/>`;
-}}
+    const initial = localStorage.key(i);
+    lsOutput.innerHTML += `${initial}: ${score}<br/>`;
+  }}
     document.getElementById("score").innerHTML = finalScore
-  } else(nextQuestion())
+  } else if(timeLeft > 1){
+    (nextQuestion())}
   if (currentQuestion === 5) {
     container.classList.add('hide')
-    final.classList.remove('hide')
-  if (e === false){
-}}}
-function highScore(){
+    final.classList.remove('hide')      
+}}
+function timeOut(){
+  setTimeout(function(){ alert("Your Time has ended!!"); 
+  container.classList.add('hide');
+}, 10000);
 }
 var questions = [{
     question: 'Commonly used data types DO NOT include:',
@@ -118,24 +118,24 @@ var questions = [{
       {
     question: 'Which is a file you always want to name the same?',
     answers: {
-        index: true ,
-        css: false ,
-        readme: false ,
-        HTML: false
+      index: true ,
+      css: false ,
+      readme: false ,
+      HTML: false
     }},
       {
-      question: 'Which of the following a is not a high-level in Javascript ?',
-      answers: {
-          class: true ,
-          HTML: false ,
-          CSS: false ,
-          Javascript: false
+    question: 'Which of the following a is not a high-level in Javascript ?',
+    answers: {
+      class: true ,
+      HTML: false ,
+      CSS: false ,
+      Javascript: false
     }},
       {
-      question: 'Which are a proper click listen? ',
-      answers: {
-          addEventListener: true ,
-          addClickListener: false ,
-          clickAddListener: false ,
-          eventAddListener: false
+    question: 'Which are a proper click listen? ',
+    answers: {
+      addEventListener: true ,
+      addClickListener: false ,
+      clickAddListener: false ,
+      eventAddListener: false
     }}]
